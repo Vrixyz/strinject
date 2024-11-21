@@ -46,6 +46,12 @@ after the injection took place.
   - Bad:
     - cross-platform support is not ideal.
     - not trivial to write, and even worse to read.
+- Tera/Askama/rinja/handlebars/
+  - Good:
+    - powerful
+  - Bad:
+    - A lot of features
+    - difficult to know if it's possible to search specific data from somewhere else.
 - manual copy pasting
   - Good:
     - Quick solution for simple cases
