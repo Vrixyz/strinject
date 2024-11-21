@@ -4,7 +4,7 @@
 
 When writing documentation, it's useful to reference and inline code snippets.
 
-`text_inject` helps you do that.
+`strinject` helps you do that.
 
 ## Features
 
@@ -24,7 +24,7 @@ and the next `// DOCUSAURUS: ToInject1_1: stop`, and replace the tag with the te
 
 ## Removes extraneous spaces
 
-Useful code is sometimes indented, `text_inject` removes out-of-context indentation.
+Useful code is sometimes indented, `strinject` removes out-of-context indentation.
 
 ## Recommendations
 
@@ -39,7 +39,7 @@ after the injection took place.
   - Bad:
     - Not ideal for code snippets which need a lot of setup boilerplate.
     - It is impractical to inline code with a more advanced setup.
-    - Less customizable, `text_inject` is context agnostic.
+    - Less customizable, `strinject` is context agnostic.
 - using custom script with sed / awk / perl / whatever
   - Good:
     - it can work.

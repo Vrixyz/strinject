@@ -1,9 +1,9 @@
 [package]
-name = "text_inject"
+name = "strinject"
 version = "0.1.0"
 edition = "2021"
 description = "Inject text from somewhere else into given text"
-repository = "https://github.com/Vrixyz/text_inject"
+repository = "https://github.com/Vrixyz/strinject"
 license = "MIT OR Apache-2.0"
 keywords = ["text", "automation", "string"]
 

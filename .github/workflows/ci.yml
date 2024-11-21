@@ -30,7 +30,7 @@ jobs:
       RUSTFLAGS: -D warnings
     steps:
       - uses: actions/checkout@v4
-      - name: Build text_inject
+      - name: Build strinject
         run: cargo test --verbose
   build-doc:
     runs-on: ubuntu-latest
