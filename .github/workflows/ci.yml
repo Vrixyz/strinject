@@ -29,6 +29,7 @@ jobs:
     env:
       RUSTFLAGS: -D warnings
     steps:
+      - uses: actions/checkout@v4
       - name: Build text_inject
         run: cargo test --verbose
   build-doc:

@@ -1,19 +1,30 @@
-use std::{borrow::Cow, fs::read_to_string};
+#![warn(missing_docs)]
+#![doc = include_str!("../README.md")]
 
 use regex::{Captures, Regex};
+use std::{borrow::Cow, fs::read_to_string};
 
+/// Something went wrong while looking for the markers
 #[derive(Debug, PartialEq)]
 pub struct IncorrectMarker {
+    /// name of the marker.
     pub marker: String,
+    /// file where the marker should have been found.
     pub filepath: String,
 }
 
+/// An error while injecting text.
 #[derive(Debug, PartialEq)]
 pub enum ErrorType {
+    /// a load tag was incorrectly formed in source text.
     IncorrectTag,
+    /// Could not read the file at given path:
     IncorrectPath(String),
+    /// An error while injecting text.
     IncorrectMarker(IncorrectMarker),
 }
+
+/// Something went wrong during text injection
 #[derive(Debug)]
 pub struct InjectError<'a> {
     /// Contains the best result we could do.
@@ -22,10 +33,16 @@ pub struct InjectError<'a> {
     pub errors: Vec<ErrorType>,
 }
 
+/// Reads the parameter and returns a new string with injected text.
+///
+/// This assumes paths are from current directory. See [`inject_with_path`] for more options.
 pub fn inject(source_text: &str) -> Result<String, InjectError> {
     inject_with_path(source_text, |path| path.to_string())
 }
 
+/// Reads the parameter and returns a new string with injected text.
+///
+/// This gives you a chance to customize any loaded path.
 pub fn inject_with_path(
     source_text: &str,
     get_path: fn(&str) -> String,
