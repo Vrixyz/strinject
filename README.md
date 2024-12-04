@@ -18,8 +18,8 @@ pub fn inject(source_text: &str) -> Result<String, InjectError>;
 
 ### Content Marker
 
-Any occurrence of the tag `<load path='test/to_inject1.txt' marker='ToInject1_1' />`
-will load the file `test/to_inject1.txt`, search for the text between `// DOCUSAURUS: ToInject1_1: start`
+Any occurrence of the tag `<load path='tests/to_inject1.txt' marker='ToInject1_1' />`
+will load the file `tests/to_inject1.txt`, search for the text between `// DOCUSAURUS: ToInject1_1: start`
 and the next `// DOCUSAURUS: ToInject1_1: stop`, and replace the tag with the text between those markers.
 
 ## Removes extraneous spaces
