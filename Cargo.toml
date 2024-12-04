@@ -1,11 +1,15 @@
 [package]
 name = "strinject"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 description = "Inject text from somewhere else into given text"
 repository = "https://github.com/Vrixyz/strinject"
 license = "MIT OR Apache-2.0"
 keywords = ["text", "automation", "string"]
 
+[features]
+download = ["dep:reqwest"]
+
 [dependencies]
 regex = "1.10"
+reqwest = { optional = true, version = "0.12" }

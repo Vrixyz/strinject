@@ -26,10 +26,16 @@ and the next `// DOCUSAURUS: ToInject1_1: stop`, and replace the tag with the te
 
 Useful code is sometimes indented, `strinject` removes out-of-context indentation.
 
+## Download
+
+Download external files pointed to by `path` with the feature `download`.
+
 ## Recommendations
 
 We advise to setup your own diff tooling to verify no unintended modifications were introduced
 after the injection took place.
+
+See [parry.rs CI](https://github.com/dimforge/parry.rs/pull/3) for an example of such tool.
 
 ## Alternatives
 

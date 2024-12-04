@@ -4,10 +4,10 @@ use strinject::*;
 fn simple_injection() {
     let result = inject("<load path='tests/to_inject1.txt' marker='ToInject1_1' />");
 
-    // Trimming end for cross platform, on windows I had \r finishing result.
     assert_eq!(
-        result.expect("This should not error out").trim_end(),
-        "correct data1 1"
+        result.expect("This should not error out"),
+        "correct data1 1
+"
     );
 }
 
@@ -35,6 +35,40 @@ fn nest_removal() {
         "correct data nest1
 correct data nested
 correct data nest2
+"
+    );
+}
+
+#[test]
+fn whole_file() {
+    use crate::*;
+
+    let result = inject("<load path='tests/to_inject1.txt' />");
+
+    assert_eq!(
+        result.expect("This should not error out"),
+        "incorrect data1 1
+correct data1 1
+incorrect data1 2
+correct data1 2
+incorrect data1 3
+
+
+// Short marker to verify it's not taking the longer ones.
+correct data short
+
+correct data nest1
+correct data nested
+correct data nest2
+
+some outside data
+    correct data not indented
+        empty line without space next
+            empty line without space next
+
+    correct data not indented again
+
+outside data again
 "
     );
 }

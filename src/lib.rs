@@ -53,11 +53,29 @@ pub fn inject_with_path(
     let mut injected_count = 0;
     // Regex to find "<load" tags and capture their info (path + marker)
     let re = Regex::new(r"<load path='(.*)'.*marker='(.*)'.*>\n?").unwrap();
+    let re_wo_marker = Regex::new(r"<load path='(.*)'[^(?!marker)]*>\n?").unwrap();
 
     let mut error = InjectError {
         result: None,
         errors: Vec::new(),
     };
+
+    let read_or_download_to_string = |path: &str| {
+        let result = read_to_string(path).ok();
+        #[cfg(feature = "download")]
+        let result = result.or_else(|| {
+            Some(
+                reqwest::blocking::get(path)
+                    .ok()?
+                    .error_for_status()
+                    .ok()?
+                    .text()
+                    .ok()?,
+            )
+        });
+        result
+    };
+
     let result = re.replace_all(source_text, |caps: &Captures| {
         let infos = &caps.extract::<2>().1;
         assert!(
@@ -72,8 +90,6 @@ pub fn inject_with_path(
         };
         let to_inject = to_inject.replace("\r\n", "\n");
         // Regex to find the markers inside comments, and only print what's inside
-        // FIXME: I think we should just paste all the inside,
-        // and then remove all "// DOCUSAURUS*"" lines, to allow reuse of a same file.
         let regex = format!(
             r"// DOCUSAURUS: {} start\n((?:\s|.)*)\s+\/\/ DOCUSAURUS: {} stop",
             infos[1], infos[1]
@@ -104,12 +120,29 @@ pub fn inject_with_path(
         result.push('\n');
         result
     });
-    if (injected_count + error.errors.len()) != total_to_inject {
+    let result = re_wo_marker.replace_all(&result, |caps: &Captures| {
+        let infos = &caps.extract::<1>().1;
+        let path = get_path(infos[0]);
+        // Reading file from the path of the tag of input file
+        let Some(mut to_inject) = read_or_download_to_string(&path) else {
+            error.errors.push(ErrorType::IncorrectPath(path));
+            return "".to_string();
+        };
+
+        injected_count += 1;
+        if !to_inject.ends_with('\n') {
+            to_inject.push('\n');
+        }
+        to_inject
+    });
+
+    if (dbg!(injected_count + error.errors.len())) != dbg!(total_to_inject) {
         error.errors.push(ErrorType::IncorrectTag);
     }
     if !error.errors.is_empty() {
         return Err(error);
     }
+    // Remove other occurrences of our specific comments
     let re = Regex::new(r"(.*\/\/ DOCUSAURUS:.*\n)").unwrap();
     let result = re.replace_all(&result, |_: &Captures| "").to_string();
     Ok(result)
