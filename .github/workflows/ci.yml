@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build strinject
-        run: cargo test --verbose
+        run: cargo test --features download --verbose
   build-doc:
     runs-on: ubuntu-latest
     env:
@@ -43,4 +43,4 @@ jobs:
         with:
           toolchain: stable
       - name: cargo doc
-        run: cargo doc --no-deps --document-private-items
+        run: cargo doc --features download --no-deps --document-private-items
