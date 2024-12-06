@@ -12,4 +12,4 @@ download = ["dep:reqwest"]
 
 [dependencies]
 regex = "1.10"
-reqwest = { optional = true, version = "0.12" }
+reqwest = { optional = true, version = "0.12", features = ["blocking"] }
