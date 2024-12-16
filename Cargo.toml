@@ -1,6 +1,6 @@
 [package]
 name = "strinject"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "Inject text from somewhere else into given text"
 repository = "https://github.com/Vrixyz/strinject"
